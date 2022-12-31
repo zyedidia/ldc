@@ -1801,6 +1801,8 @@ llvm::GlobalVariable *declareGlobal(const Loc &loc, llvm::Module &module,
   if (useDLLImport && global.params.targetTriple->isOSWindows())
     gvar->setDLLStorageClass(LLGlobalValue::DLLImportStorageClass);
 
+  gvar->setDSOLocal(true);
+
   return gvar;
 }
 
@@ -1809,6 +1811,7 @@ void defineGlobal(llvm::GlobalVariable *global, llvm::Constant *init,
   assert(global->isDeclaration() && "Global variable already defined");
   assert(init);
   global->setInitializer(init);
+  global->setDSOLocal(true);
   if (symbolForLinkageAndVisibility)
     setLinkageAndVisibility(symbolForLinkageAndVisibility, global);
 }

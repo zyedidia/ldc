@@ -20,6 +20,7 @@
 #include "gen/tollvm.h"
 #include "ir/irfunction.h"
 #include "llvm/IR/InlineAsm.h"
+#include "llvm/Target/TargetMachine.h"
 #include <cstdarg>
 
 IRState *gIR = nullptr;
@@ -275,7 +276,7 @@ IRState::createInlineAsmCall(const Loc &loc, llvm::InlineAsm *ia,
   // constraint/argument index mapping
   ptrdiff_t i = call->getType()->isVoidTy() ? 0 : -1;
   size_t indirectIdx = 0;
-    
+
   for (const auto &constraintInfo : ia->ParseConstraints()) {
     if (constraintInfo.isIndirect) {
       call->addParamAttr(i, llvm::Attribute::get(
